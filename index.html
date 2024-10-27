@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie-based User Authentication</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form id="registerForm">
+        <input type="text" id="registerUsername" placeholder="Enter Username" required>
+        <input type="password" id="registerPassword" placeholder="Enter Password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Enter Username" required>
+        <input type="password" id="loginPassword" placeholder="Enter Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        // Function to set a cookie (session-based)
+        function setCookie(name, value) {
+            document.cookie = name + "=" + (value || "") + "; path=/";
+        }
+
+        // Simplified function to get a cookie by name
+        function getCookie(name) {
+            const match = document.cookie.match('(^|;)\\s*' + name + '=([^;]+)');
+            return match ? match[2] : null;
+        }
+
+        // Register Form Submission
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            // Save username and password to cookies (session-based)
+            setCookie('username', username);
+            setCookie('password', password);
+
+            alert('Registration successful! You can now log in.');
+        });
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const inputUsername = document.getElementById('loginUsername').value;
+            const inputPassword = document.getElementById('loginPassword').value;
+
+            // Retrieve username and password from cookies
+            const savedUsername = getCookie('username');
+            const savedPassword = getCookie('password');
+
+            // Check if input matches saved data
+            if (inputUsername === savedUsername && inputPassword === savedPassword) {
+                document.getElementById('message').textContent = 'Login successful!';
+            } else {
+                document.getElementById('message').textContent = 'Invalid username or password.';
+            }
+        });
+    </script>
+</body>
+</html>
